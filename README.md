@@ -3,7 +3,7 @@
 
 ## Introduction
 
-위 논문에서 제안한 material type reocgnition network에 대한 설명입니다.
+위 논문에서 제안한 material type reocgnition network에 대한 설명 및 코드 입니다.
 
 - Multi-view 또는 multi-illumination 환경에서 color texture와 surface reflectance를 encoding하여 patch-wise material claasification을 수행하는 네트워크
 - weight sharing하는 backbone network(f)에 multi-view patch들(p_1,p_2,...,p_n)을 주입하고 임베딩된 f(p_1),f(p_2),...,f(p_n)들은 순차적으로 LSTM에 주입하여 multi-view correlation을 추출하는 network 
