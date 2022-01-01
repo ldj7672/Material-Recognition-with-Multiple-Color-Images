@@ -26,5 +26,5 @@ Color multi view 이미지들로 differential image를 생성하고, color image
   
 
 ## Experimental Results
-
+- multi-view, two-stream network, attention module, differential images 의 효과를 각각 검증하기 위해 5개의 경우로 나누어 실험
 <img src="/figures/experimental_results.png" width="610" height="230">
