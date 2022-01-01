@@ -10,7 +10,7 @@
 
 ## Proposed Network details
 
-![figure11](https://user-images.githubusercontent.com/96943196/147853235-e024583d-d4f8-4a8a-a174-2bb23d980a61.png)
+![figure11](/figures/custom_network.png)
 
 - **Color Feature Network** : multi-view color texture 정보 추출
 - **Brightness Feature Network** : multi-view 환경에서 표면에서 반사된 빛을 관측하는 각도차이에 의한 brightness 차이를 추출
@@ -27,4 +27,4 @@ Color multi view 이미지들로 differential image를 생성하고, color image
 
 ## Experimental Results
 
-![table5](https://user-images.githubusercontent.com/96943196/147854077-31aced66-ba00-4696-91dc-c5dd56c78f1a.png)
+<img src="/figures/experimental_results.png" width="610" height="230">
