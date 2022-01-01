@@ -1,14 +1,14 @@
-### > [Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
+> # [Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
 >   > Seokyeong Lee, Dongjin Lee, Hyun-Cheol Kim, Seungkyu Lee, *IEEE Access 2021*
 
-# Introduction
+## Introduction
 
 위 논문에서 제안한 material type reocgnition network에 대한 설명입니다.
 
 - Multi-view 또는 multi-illumination 환경에서 color texture와 surface reflectance를 encoding하여 patch-wise material claasification을 수행하는 네트워크
 - weight sharing하는 backbone network(f)에 multi-view patch들(p_1,p_2,...,p_n)을 주입하고 임베딩된 f(p_1),f(p_2),...,f(p_n)들은 순차적으로 LSTM에 주입하여 multi-view correlation을 추출하는 network 
 
-## Basic Cumtom Network
+## Proposed Network details
 
 ![figure11](https://user-images.githubusercontent.com/96943196/147853235-e024583d-d4f8-4a8a-a174-2bb23d980a61.png)
 
