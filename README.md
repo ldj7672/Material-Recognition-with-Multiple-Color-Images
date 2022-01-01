@@ -1,4 +1,4 @@
-> # [Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
+> ## [Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
 >   > Seokyeong Lee, Dongjin Lee, Hyun-Cheol Kim, Seungkyu Lee, *IEEE Access 2021*
 
 ## Introduction
@@ -25,6 +25,6 @@ Color texture와 surface reflectance를 encoding하여 재질을 분류하는 tw
 Color multi view 이미지들로 differential image를 생성하고, color image들은 Color Feature Network의 input으로 differential image들은 Brightness Feature Network의 input으로 사용. 2개의 network의 output을 concat하고 attention을 거친 뒤 LSTM으로 multi-view correlation을 추출. 
   
 
+## Experimental Results
 
-## Main Network
-TBD.. 
+![table5](https://user-images.githubusercontent.com/96943196/147854077-31aced66-ba00-4696-91dc-c5dd56c78f1a.png)
