@@ -1,4 +1,4 @@
->[Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
+>[# **Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation**](https://ieeexplore.ieee.org/document/9658490, "paper link")
 >   > Seokyeong Lee, Dongjin Lee, Hyun-Cheol Kim, Seungkyu Lee, *IEEE Access 2021*
 
 # Introduction
