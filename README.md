@@ -22,7 +22,7 @@ Color multi view 이미지들로 differential image를 생성하고, color image
 ## Paper
 
 >[Material Type Recognition of Indoor Scenes via Surface Reflectance Estimation](https://ieeexplore.ieee.org/document/9658490, "paper link")
->   > 
+>   > Seokyeong Lee, Dongjin Lee, Hyun-Cheol Kim, Seungkyu Lee, IEEE Access 2021
 
 ## Main Network
 TBD.. 
