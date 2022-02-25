@@ -6,34 +6,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
 
-class Normalize(nn.Module):
-    
-    r"""Performs :math:`L_p` normalization of inputs over specified dimension.
 
-    Does:
-
-    .. math::
-        v = \frac{v}{\max(\lVert v \rVert_p, \epsilon)}
-
-    for each subtensor v over dimension dim of input. Each subtensor is
-    flattened into a vector, i.e. :math:`\lVert v \rVert_p` is not a matrix
-    norm.
-
-    With default arguments normalizes over the second dimension with Euclidean
-    norm.
-
-    Args:
-        p (float): the exponent value in the norm formulation. Default: 2
-        dim (int): the dimension to reduce. Default: 1
-    """
-    def __init__(self, p=2, dim=1):
-        super(Normalize, self).__init__()
-        self.p = p
-        self.dim = dim
+class AttentionBlock(nn.Module):
+    def __init__(self, in_channels, r=16):
+        super().__init__()
+        self.excitation = nn.Sequential(
+            nn.Linear(in_channels, in_channels // r),
+            nn.ReLU(),
+            nn.Linear(in_channels // r, in_channels),
+            nn.Sigmoid()
+        )
 
     def forward(self, x):
-        return F.normalize(x, self.p, self.dim, eps=1e-8)
-
+        b,v,c = x.size()
+        x_ = torch.mean(x,dim=1).view(b,1,c)
+        x_ = self.excitation(x_)
+        x = x*x_
+        return x
 
 class oneStream_multiView_Net(nn.Module):
     def __init__(self,numClass):
@@ -57,25 +46,24 @@ class oneStream_multiView_Net(nn.Module):
         x = self.fc1(x[:,-1,:])
         return x
 
-
 class twoStream_multiView_Net(nn.Module):
     def __init__(self,numClass):
         super(twoStream_multiView_Net, self).__init__()
-        self.model1 = models.resnet18(pretrained=True)
-        self.model2 = models.resnet18(pretrained=True)
+        self.colorFeatNet = models.resnet18(pretrained=True)
+        self.brightnessVarNet = models.resnet18(pretrained=True)
 
-        self.model1.fc = nn.Linear(512,128)
-        self.model2.fc = nn.Linear(512,64)
+        self.colorFeatNet.fc = nn.Linear(512,128)
+        self.brightnessVarNet.fc = nn.Linear(512,64)
 
-        self.lstm_1 = nn.LSTM(input_size=192, hidden_size=128,num_layers=1,batch_first=True)
-        self.fc1 = nn.Linear(128,numClass)
+        self.lstm = nn.LSTM(input_size=192, hidden_size=128,num_layers=1,batch_first=True)
+        self.last_fc = nn.Linear(128,numClass)
 
-        self.L2norm = Normalize()
-        self.bn1 = nn.BatchNorm1d(128)
-        self.bn2 = nn.BatchNorm1d(64)
+        self.bn_color = nn.BatchNorm1d(128)
+        self.bn_brightness = nn.BatchNorm1d(64)
+
+        self.Attblock = AttentionBlock(in_channels=128+64)
 
     def forward(self, x):
-        cuda = torch.device('cuda')
         b_size, numView, C, H, W = x.size()
         #===========Patch Sorting===========#
         x_1 = copy.copy(x)
@@ -110,18 +98,25 @@ class twoStream_multiView_Net(nn.Module):
         x_r = x_r.reshape(b_size*numView, C, H, W)
         #============================+++============#
 
-        x = self.model1(x)
-        x_r = self.model2(x_r)
+        x = self.bn_color(self.colorFeatNet(x))
+        x_r = self.bn_brightness(self.brightnessVarNet(x_r))
         x = x.view(b_size, numView, -1) 
         x_r = x_r.view(b_size, numView, -1) 
-
         x = torch.cat([x,x_r],dim=2)
+        x = self.Attblock(x)
+
         del x_r
         x = x.view(b_size, numView, -1) # reshape input for LSTM: cnnBatch/25 = rnnBatch
 
-        x,(_,_) = self.lstm_1(x)
-        x = self.fc1(x[:,-1,:])
+        x,(_,_) = self.lstm(x)
+        x = self.last_fc(x[:,-1,:])
         
         return x
 
+if __name__ == '__main__':
+    # model = oneStream_multiView_Net(numClass=30)
+    model = twoStream_multiView_Net(numClass=30)
+    model.eval()
 
+    x = torch.rand((10,9,3,224,224)) # batch size, num of views, C, H, W
+    print(model(x).shape)
