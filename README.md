@@ -13,9 +13,9 @@
 
 ![figure11](/figures/custom_network.png)
 
-- **Color Feature Network** : multi-view color texture 정보 추출
-- **Brightness Feature Network** : multi-view 환경에서 표면에서 반사된 빛을 관측하는 각도차이에 의한 brightness 차이를 추출
-- **Attention Module** : 2개의 backbone network의 output feature에 channel-wise attention을 가해주는 구조(fc-relu-fc-sigmoid)
+- **Color Feature Network** : multi-view/illumination color texture 정보 추출
+- **Brightness Feature Network** : multi-view/illumination 환경에서 표면에서 반사된 빛을 관측하는 각도차이에 의한 brightness 차이를 추출
+- **Attention Module** : Color, Brightness variation feature 중 더 중요한 정보를 강조하기 위해, channel-wise self-attention 수행 (fc-relu-fc-sigmoid)
 - **LSTM** : view별 임베딩된 feature들을 순차적으로 LSTM에 주입하여 multi-view correlation을 추출하는 구조. LSTM의 output은 fc에 연결되어 material type을 분류.
 
   - *OneStream_multiView_Net* : Color Feature Network + Attention Module + LSTM
